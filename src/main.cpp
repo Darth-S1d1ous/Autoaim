@@ -1,9 +1,4 @@
 #include <iostream>
-#include <Eigen/Dense>
-#include <opencv2/core.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/core/cuda.hpp>
 #include "TRTInferenceEngine.hpp"
 
 using namespace engine;

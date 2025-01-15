@@ -5,23 +5,32 @@
 #include <NvInferRuntimeBase.h>
 #include <memory>
 #include <opencv2/core/mat.hpp>
+#include <opencv2/core/types.hpp>
 #include <string>
+#include <opencv2/opencv.hpp>
 #include <vector>
 #include <Eigen/Dense>
 
 namespace engine{
     class Logger : public nvinfer1::ILogger{
+    public:
         void log(Severity severity, const char* msg) noexcept;
     }; 
 
     struct BBox{
         int x1, y1, x2, y2;
         float score;
+        int classId;
     };
 
     struct KeyPoints{
         Eigen::MatrixXf keypoints;
         float score;
+    };
+
+    struct Person{
+        BBox bbox;
+        KeyPoints keypoints;
     };
 
     class TrtEngineBase{
@@ -37,9 +46,9 @@ namespace engine{
             nvinfer1::Dims inputDims, outputDims;
 
             void deserializeEngineFromFile(const std::string& enginePath);
-            static void letterBox(const cv::Mat& src, cv::Mat& dst, const cv::Size& dstSize);
-            static BBox letterBox2Original(const BBox& letterBox, const cv::Size& srcSize, const cv::Size& dstSize);
-            virtual void preprocessBase();
+            static void letterBox(const cv::Mat& src, cv::Mat& dst, const cv::Size dstSize);
+            static BBox letterBox2Original(const BBox&, const cv::Size srcSize, const cv::Size dstSize);
+            virtual void preprocessBase(const ImageBatch&, float*, bool doNormalize = true);
         
         public:
             TrtEngineBase();
