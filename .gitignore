@@ -1,3 +1,4 @@
 .vscode/
 build/
-models/
+models/*.pt
+models/*.pth
