@@ -1,0 +1,3 @@
+D:/c and c++/Autoaim/build/CMakeFiles/Autoaim.dir
+D:/c and c++/Autoaim/build/CMakeFiles/ALL_BUILD.dir
+D:/c and c++/Autoaim/build/CMakeFiles/ZERO_CHECK.dir
