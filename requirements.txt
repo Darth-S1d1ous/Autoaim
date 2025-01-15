@@ -1,0 +1,6 @@
+cuda: 12.6
+cudnn: 9.6
+TensorRT: 10.7.23
+opencv: 4.9.0
+Eigen: 3.4.0
+Visual Studio 17 2022

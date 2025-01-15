@@ -1,0 +1,10 @@
+^D:\C AND C++\AUTOAIM\BUILD\CMAKEFILES\280CFA311251E8B8816BD649592B58D5\GENERATE.STAMP.RULE
+setlocal
+"E:\Program Files\CMake\bin\cmake.exe" "-SD:/c and c++/Autoaim" "-BD:/c and c++/Autoaim/build" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "D:/c and c++/Autoaim/build/Autoaim.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
