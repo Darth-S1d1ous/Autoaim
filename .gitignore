@@ -1,4 +1,8 @@
+.vs/
 .vscode/
+
 build/
-models/*.pt
-models/*.pth
+enc_temp_folder/
+*.pt
+*.pth
+*.onnx
