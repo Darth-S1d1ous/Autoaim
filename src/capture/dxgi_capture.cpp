@@ -1,4 +1,5 @@
 #include "dxgi_capture.h"
+#include <log/Log.h>
 #include <iostream>
 
 bool DXGICapture::init() {
@@ -18,6 +19,7 @@ bool DXGICapture::init() {
 		&m_context
 	);
 	if (FAILED(hr)) {
+		CORE_ERROR("Create device failed!");
 		return false;
 	}
 
@@ -44,6 +46,7 @@ bool DXGICapture::init() {
 
 	hr = output1->DuplicateOutput(m_device.Get(), &m_duplication);
 	if (FAILED(hr)) {
+		CORE_ERROR("Duplicate output failed!");
 		return false;
 	}
 
@@ -60,11 +63,12 @@ bool DXGICapture::init() {
 
 	hr = m_device->CreateTexture2D(&texDesc, nullptr, &m_staging);
 	if (FAILED(hr)) {
+		CORE_ERROR("Create texture failed!");
 		return false;
 	}
 
-	std::cout << "DXGI Capture init OK" << std::endl;
-
+	CORE_INFO("DXGI Capture init OK");
+	
 	return true;
 }
 
@@ -81,7 +85,7 @@ bool DXGICapture::capture() {
 		return false;
 	}
 	if (FAILED(hr)) {
-		std::cerr << "AcquireNextFrame failed\n";
+		CORE_ERROR("AcquireNextFrame failed!");
 		return false;
 	}
 
@@ -100,7 +104,7 @@ bool DXGICapture::capture() {
 		m_context->Unmap(m_staging.Get(), 0);
 	}
 	else {
-		std::cerr << "Copyt Texture failed\n";
+		CORE_ERROR("Copy texture failed!");
 	}
 
 	m_duplication->ReleaseFrame();

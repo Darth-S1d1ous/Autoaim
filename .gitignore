@@ -3,6 +3,7 @@
 
 build/
 enc_temp_folder/
+
 *.pt
 *.pth
 *.onnx

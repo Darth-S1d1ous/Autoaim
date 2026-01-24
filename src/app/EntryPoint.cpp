@@ -1,4 +1,5 @@
 #include "capture/dxgi_capture.h"
+#include "log/Log.h"
 #include <atomic>
 #include <csignal>
 #include <thread>
@@ -13,6 +14,9 @@ static void signalHandler(int) {
 int main()
 {
 	signal(SIGINT, signalHandler);
+
+	Log::Init();
+	CORE_WARN("Initialized Log!");
 
 	DXGICapture cap;
 	if (!cap.init()) {
