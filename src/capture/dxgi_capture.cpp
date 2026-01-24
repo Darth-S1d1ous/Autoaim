@@ -92,7 +92,7 @@ bool DXGICapture::capture() {
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> frame;
 	resource.As(&frame);
 
-	// Copy to cpu texture
+	// Copy to cpu texture. frame -> m_staging
 	m_context->CopyResource(m_staging.Get(), frame.Get());
 
 	D3D11_MAPPED_SUBRESOURCE mapped;
@@ -105,6 +105,7 @@ bool DXGICapture::capture() {
 	}
 	else {
 		CORE_ERROR("Copy texture failed!");
+		return false;
 	}
 
 	m_duplication->ReleaseFrame();

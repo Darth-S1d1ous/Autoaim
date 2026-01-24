@@ -4,6 +4,8 @@ project(Autoaim)
 
 set(CMAKE_CXX_STANDARD 17)
 
+find_package(OpenCV REQUIRED)
+
 add_executable(Autoaim
 	src/app/EntryPoint.cpp
 	src/capture/dxgi_capture.cpp
