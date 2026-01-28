@@ -5,7 +5,10 @@ bin/
 build/
 out/
 enc_temp_folder/
+**/data/
+**/runs/
 
 *.pt
 *.pth
 *.onnx
+*.jpg
