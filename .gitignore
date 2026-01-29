@@ -8,6 +8,8 @@ enc_temp_folder/
 **/data/
 **/runs/
 
+vendor/TensorRT/*
+
 *.pt
 *.pth
 *.onnx

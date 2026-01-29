@@ -1,6 +1,7 @@
 #include "dxgi_capture.h"
 #include <log/Log.h>
 #include <iostream>
+#include <opencv2/opencv.hpp>
 
 bool DXGICapture::init() {
 	HRESULT hr;
@@ -73,6 +74,8 @@ bool DXGICapture::init() {
 }
 
 bool DXGICapture::capture() {
+	static int warmup_count = 0;
+	
 	DXGI_OUTDUPL_FRAME_INFO frameInfo;
 	Microsoft::WRL::ComPtr<IDXGIResource> resource;
 
@@ -89,6 +92,12 @@ bool DXGICapture::capture() {
 		return false;
 	}
 
+	if (warmup_count < WARM_UP) {
+		warmup_count++;
+		m_duplication->ReleaseFrame();
+		return false;
+	}
+
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> frame;
 	resource.As(&frame);
 
@@ -101,6 +110,17 @@ bool DXGICapture::capture() {
 		// mapped.pData is BGRA buffer
 		// mapped.RowPitch is stride
 		// 👉 这里后面直接转 cv::Mat / TensorRT
+		cv::Mat img_bgra(
+			m_height,
+			m_width,
+			CV_8UC4,
+			mapped.pData,
+			mapped.RowPitch
+		);
+		cv::Mat img_bgr;
+		cv::cvtColor(img_bgra, img_bgr, cv::COLOR_BGRA2BGR);
+		cv::imshow("DXGI Capture", img_bgr);
+		cv::waitKey(1);
 		m_context->Unmap(m_staging.Get(), 0);
 	}
 	else {

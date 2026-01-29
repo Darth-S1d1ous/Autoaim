@@ -18,6 +18,8 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_staging;
 
+	static const int WARM_UP = 3;
+
 	int m_width = 0;
 	int m_height = 0;
 };
