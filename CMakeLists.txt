@@ -32,6 +32,7 @@ add_executable(TestInference
 	src/app/TestInference.cpp
 	src/detector/Detector.cpp
 	src/detector/TrtEngine.cpp
+	src/detector/cuda/cuda_preprocess.cu
 	src/log/Log.cpp
 )
 
@@ -39,6 +40,7 @@ target_include_directories(TestInference PRIVATE
 	src
 	${CMAKE_SOURCE_DIR}/vendor/spdlog/include
 	${OpenCV_INCLUDE_DIRS}
+	${CUDAToolkit_INCLUDE_DIRS}
 	${TENSORRT_ROOT}/include
 )
 
@@ -47,6 +49,7 @@ target_link_directories(TestInference PRIVATE
 )
 
 target_link_libraries(TestInference
+	CUDA::cudart
 	nvinfer
 	nvinfer_plugin
 	nvonnxparser
