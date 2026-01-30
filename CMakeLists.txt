@@ -49,8 +49,9 @@ target_link_directories(TestInference PRIVATE
 )
 
 target_link_libraries(TestInference
+	${OpenCV_LIBS}
 	CUDA::cudart
-	nvinfer
-	nvinfer_plugin
-	nvonnxparser
+	nvinfer_10
+	nvinfer_plugin_10
+	nvonnxparser_10
 )
