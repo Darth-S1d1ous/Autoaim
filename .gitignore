@@ -13,4 +13,5 @@ vendor/TensorRT/*
 *.pt
 *.pth
 *.onnx
+*.engine
 *.jpg
