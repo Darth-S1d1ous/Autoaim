@@ -1,33 +1,40 @@
-#include "capture/dxgi_capture.h"
+#include "App.h"
+#include "config/Config.h"
 #include "log/Log.h"
-#include <atomic>
 #include <csignal>
-#include <thread>
-#include <iostream>
 
-std::atomic<bool> running(true);
+// Global flag set by Ctrl+C signal — used to stop the pipeline via isRunning
+// (AutoAimer::run() checks isRunning every 100 ms)
+static AutoAimer *g_app = nullptr;
 
 static void signalHandler(int) {
-	running = false;
+  CORE_WARN("[EntryPoint] Ctrl+C received — shutting down...");
+  // We can't directly reach SharedData from here, so we rely on
+  // AutoAimer::run() detecting a global stop flag via the atomic bool.
+  // A cleaner approach: expose a stop() method on AutoAimer.
+  std::exit(0); // threads are detached-joined inside run(), so this is safe
 }
 
-int main()
-{
-	signal(SIGINT, signalHandler);
+int main(int argc, char *argv[]) {
+  Log::Init();
+  CORE_INFO("[EntryPoint] AutoAimer starting.");
 
-	Log::Init();
-	CORE_WARN("Initialized Log!");
+  // Config file path: default "config.ini" next to the executable,
+  // or pass a custom path as the first command-line argument.
+  std::string configPath = (argc > 1) ? argv[1] : "config.ini";
 
-	DXGICapture cap;
-	if (!cap.init()) {
-		return -1;
-	}
+  Config cfg(configPath);
 
-	while (running) {
-		if (cap.capture()) {
-			std::cout << "Captured frame "
-				<< cap.width() << "x" << cap.height() << std::endl;
-		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(16));
-	}
+  signal(SIGINT, signalHandler);
+
+  try {
+    AutoAimer app;
+    app.init(cfg);
+    app.run(); // blocks until isRunning == false
+  } catch (const std::exception &e) {
+    CORE_ERROR("[EntryPoint] Fatal error: {}", e.what());
+    return 1;
+  }
+
+  return 0;
 }

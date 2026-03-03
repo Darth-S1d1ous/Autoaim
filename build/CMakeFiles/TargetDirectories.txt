@@ -1,3 +1,0 @@
-D:/Autoaim/build/CMakeFiles/Autoaim.dir
-D:/Autoaim/build/CMakeFiles/ALL_BUILD.dir
-D:/Autoaim/build/CMakeFiles/ZERO_CHECK.dir

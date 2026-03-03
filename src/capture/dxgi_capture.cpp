@@ -1,7 +1,8 @@
 #include "dxgi_capture.h"
-#include <log/Log.h>
+#include <chrono> // Added for std::chrono
 #include <iostream>
-#include <opencv2/opencv.hpp>
+#include <log/Log.h>
+#include <thread> // Added for std::this_thread::sleep_for
 
 bool DXGICapture::init() {
 	HRESULT hr;
@@ -69,6 +70,7 @@ bool DXGICapture::init() {
 	}
 
 	CORE_INFO("DXGI Capture init OK");
+  m_isOn = true;
 	
 	return true;
 }
@@ -130,4 +132,11 @@ bool DXGICapture::capture() {
 
 	m_duplication->ReleaseFrame();
 	return true;
+}
+
+bool DXGICapture::getLatestFrame(cv::Mat &output) {
+  if (m_latestFrame.empty())
+    return false;
+  output = m_latestFrame.clone();
+  return true;
 }

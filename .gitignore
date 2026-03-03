@@ -8,6 +8,10 @@ enc_temp_folder/
 **/data/
 **/runs/
 
+# Windows reserved device name created as a side-effect of CMake build scripts
+nul
+NUL
+
 vendor/TensorRT/*
 
 *.pt
